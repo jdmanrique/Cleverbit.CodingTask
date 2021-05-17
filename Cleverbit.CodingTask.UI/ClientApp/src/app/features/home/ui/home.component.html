@@ -1,0 +1,70 @@
+<div class="header d-flex flex-column flex-md-row align-items-center justify-content-between p-4 px-md-4 mb-5 bg-white border-bottom box-shadow">
+  <h3 class="my-0 mr-md-auto font-weight-normal">Cleverbit Software</h3>
+  <div class="d-flex flex-row align-items-center login justify-content-between">
+    <p class="my-0 mr-md-auto font-weight-normal lead" *ngIf="!(auth.CurrentUser$ | async)">Welcome Guest</p>
+    <p class="my-0 mr-md-auto font-weight-normal lead" *ngIf="(auth.CurrentUser$ | async)">{{ "Hi, " + (auth.CurrentUser$ | async).userName}}</p>
+    <a class="btn btn-outline-primary" href="#" routerLink="/login" *ngIf="!(auth.CurrentUser$ | async)">Log In</a>
+    <a class="btn btn-outline-primary" href="#" *ngIf="(auth.CurrentUser$ | async)" (click)="SignOut()">Log Off</a>
+  </div>
+</div>
+<div class="container d-flex flex-column align-items-center pb-5">
+  <h2 class="my-0 mr-md-auto font-weight-normal mt-3 display-5">Number Game Application</h2>
+  <div class="d-flex flex-column align-items-center mt-3 w-50">
+    <p class="lead text-italic text-danger" *ngIf="!(auth.CurrentUser$ | async)">*Login to participate in a Match.</p>
+    
+    <div class="d-flex flex-column align-items-start mt-3 w-100" *ngIf="(auth.CurrentUser$ | async)">
+      <h5 class="font-weight-normal ">Active Match</h5>
+      <p class="text-danger lead text-italic" *ngIf="!(homeService.ActiveMatch$ | async)">No Active Match!</p>
+      <table class="table table-bordered" *ngIf="(homeService.ActiveMatch$ | async)">
+        <thead>
+          <tr>
+            <th>Match ID</th>
+            <th>Expiry Date</th>
+            <th>Number Input</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>
+              {{(homeService.ActiveMatch$ | async).matchId}}
+            </td>
+            <td>
+              {{(homeService.ActiveMatch$ | async).expiryDate | date:'short'}}
+            </td>
+            <td>
+              <span *ngIf="(homeService.ActiveMatch$ | async).numberInput != 0">{{(homeService.ActiveMatch$ | async).numberInput}}</span>
+              <button class="btn btn-primary" (click)="Play()" *ngIf="(homeService.ActiveMatch$ | async).numberInput == 0">Play Now!</button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="d-flex flex-column align-items-start mt-3 w-100">
+      <h5 class="font-weight-normal ">Expired Matches</h5>
+      <table class="table table-bordered" >
+        <thead>
+          <tr>
+            <th>Match ID</th>
+            <th>Expiry Date</th>
+            <th>Winner</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let item of homeService.ExpiredMatches$ | async">
+            <td>
+              {{item.matchId}}
+            </td>
+            <td>
+              {{item.expiryDate | date:'short'}}
+            </td>
+            <td>
+              {{item.winner}}
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    
+  </div>
+</div>

@@ -1,0 +1,21 @@
+<div class="header d-flex flex-column flex-md-row align-items-center justify-content-between p-4 px-md-4 mb-3 bg-white border-bottom box-shadow">
+  <h3 class="my-0 mr-md-auto font-weight-normal">Cleverbit Software</h3>
+  <div class="d-flex flex-row align-items-center login justify-content-between">
+  </div>
+</div>
+  
+  <form class="form-signin mt-5" novalidate [formGroup]="form">
+    <h1 class="h3 mb-3 font-weight-normal">Login</h1>
+    <div class="form-group">
+      <label for="inputEmail">User Name</label>
+      <input type="email" id="inputEmail" class="form-control" placeholder="User Name" formControlName="userName">
+      <div class="text-danger" *ngIf="form.get('userName')?.invalid && (form.get('userName')?.dirty || form.get('userName')?.touched)">Username is required</div>
+    </div>
+    <div class="form-group mt-3">
+      <label for="inputPassword">Password</label>
+      <input type="password" id="inputPassword" class="form-control" placeholder="Password" formControlName="password" required="">
+      <div class="text-danger" *ngIf="form.get('password')?.invalid && (form.get('password')?.dirty || form.get('password')?.touched)">Password is required</div>
+    </div>
+    <button class="btn btn-lg btn-primary btn-block mt-3" (click)="Submit()">Sign in</button>
+    <div class="text-danger" *ngIf="!AuthResult?.isAuthenticated">{{AuthResult?.authErrorMessage}}</div>
+  </form>
